@@ -1,3 +1,7 @@
+# Local Files
+responses/
+.gphcache/
+
 # Logs
 logs
 *.log
