@@ -1,10 +1,10 @@
 {
-  "name": "graph-interface-auth-providers",
+  "name": "graph-interface-desktop-provider",
   "version": "0.1.0",
   "description": "Authentication Providers for delegated access on Graph-Interface",
   "main": "index.js",
   "repository": "https://github.com/Giancarl021/graph-interface-auth-providers.git",
-  "author": "Gianarlo Fontela da Luz <gian.f.luz@hotmail.com>",
+  "author": "Giancarlo Fontela da Luz <gian.f.luz@hotmail.com>",
   "license": "MIT",
   "dependencies": {
     "client-oauth2": "^4.3.2",
