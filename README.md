@@ -29,7 +29,7 @@ Then use in the ``authorizationProvider`` option when creating your graph interf
 
 ```javascript
 const graph = await createGraphInterface(credentials, {
-    authorizationProvider: createDesktopMiddleware(options)
+    authenticationProvider: createDesktopMiddleware(options)
     // options
 });
 ```
