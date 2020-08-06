@@ -43,8 +43,9 @@ module.exports = function (options = filler) {
         }
 
         const response = await new Promise((resolve, reject) => {
+            let server;
             try {
-                const server = http.createServer(async (req, res) => {
+                server = http.createServer(async (req, res) => {
                     if (req.url === '/favicon.ico') {
                         res.writeHead(404);
                         return res.end();
@@ -59,16 +60,17 @@ module.exports = function (options = filler) {
                 server.listen(9090);
 
                 const client = new Client({
-                    clientId: credentials.clientId,
-                    clientSecret: credentials.clientSecret,
-                    authorizationUri: `https://login.microsoftonline.com/${credentials.tenantId}/oauth2/v2.0/authorize`,
-                    accessTokenUri: `https://login.microsoftonline.com/${credentials.tenantId}/oauth2/v2.0/token`,
+                    clientId: credentials.clientId || credentials.client_id || credentials['client-id'],
+                    clientSecret: credentials.clientSecret || credentials.client_secret || credentials['client-secret'],
+                    authorizationUri: `https://login.microsoftonline.com/${credentials.tenantId || credentials.tenant_id || credentials['tenant-id']}/oauth2/v2.0/authorize`,
+                    accessTokenUri: `https://login.microsoftonline.com/${credentials.tenantId || credentials.tenant_id || credentials['tenant-id']}/oauth2/v2.0/token`,
                     redirectUri: 'http://localhost:9090',
                     scopes: ['https://graph.microsoft.com/.default', 'offline_access']
                 });
 
                 open(client.code.getUri());
             } catch (err) {
+                if(server) server.close();
                 return reject(err);
             }
         });
