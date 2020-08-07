@@ -9,6 +9,10 @@ const createSecureJsonInterface = require('./src/util/sjson');
 module.exports = function (options = filler) {
     fillOptions(options, filler);
     return async function (credentials) {
+        const clientId = credentials.clientId || credentials.client_id || credentials['client-id'];
+        const clientSecret = credentials.clientSecret || credentials.client_secret || credentials['client-secret'];
+        const tenantId = credentials.tenantId || credentials.tenant_id || credentials['tenant-id'];
+
         const refreshToken = createSecureJsonInterface(
             `${options.refreshTokenPath}/refresh_token-${JSON.stringify(credentials)}`,
             process.env.USER || process.env.USERNAME,
@@ -16,28 +20,30 @@ module.exports = function (options = filler) {
         );
 
         if (refreshToken.exists()) {
-            const {
-                refresh_token
-            } = refreshToken.load();
+            const { refresh_token } = refreshToken.load();
+
             const getOptions = {
-                url: `https://login.microsoftonline.com/${credentials.tenantId}/oauth2/v2.0/token`,
+                url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 form: {
-                    client_id: credentials.clientId,
-                    client_secret: credentials.clientSecret,
+                    client_id: clientId,
+                    client_secret: clientSecret,
                     grant_type: 'refresh_token',
-                    redirect_uri: 'http://localhost:9090',
+                    redirect_uri: 'http://localhost:' + options.port,
                     scope: 'https://graph.microsoft.com/.default offline_access',
                     refresh_token
                 }
             };
             const response = await get(getOptions);
-            refreshToken.save({
-                refresh_token: response.refresh_token
-            });
+
+            if(response.refresh_token) {
+                refreshToken.save({
+                    refresh_token: response.refresh_token
+                });
+            }
 
             return response;
         }
@@ -60,10 +66,10 @@ module.exports = function (options = filler) {
                 server.listen(9090);
 
                 const client = new Client({
-                    clientId: credentials.clientId || credentials.client_id || credentials['client-id'],
-                    clientSecret: credentials.clientSecret || credentials.client_secret || credentials['client-secret'],
-                    authorizationUri: `https://login.microsoftonline.com/${credentials.tenantId || credentials.tenant_id || credentials['tenant-id']}/oauth2/v2.0/authorize`,
-                    accessTokenUri: `https://login.microsoftonline.com/${credentials.tenantId || credentials.tenant_id || credentials['tenant-id']}/oauth2/v2.0/token`,
+                    clientId,
+                    clientSecret,
+                    authorizationUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize`,
+                    accessTokenUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
                     redirectUri: 'http://localhost:9090',
                     scopes: ['https://graph.microsoft.com/.default', 'offline_access']
                 });

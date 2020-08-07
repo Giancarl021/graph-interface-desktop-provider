@@ -1,5 +1,6 @@
 const options = {
-    refreshTokenPath: '.'
+    refreshTokenPath: '.',
+    port: 9090
 };
 
 function fillOptions(options, filler) {
