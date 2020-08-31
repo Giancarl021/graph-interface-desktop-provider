@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const open = require('open');
+const { createHash } = require('crypto');
 const Client = require('client-oauth2');
 const get = require('./src/util/request');
 const { options: filler, fillOptions } = require('./src/util/options');
@@ -15,7 +16,7 @@ module.exports = function (options = filler) {
 
         const refreshToken = createSecureJsonInterface(
             `${options.refreshTokenPath}/refresh_token-${JSON.stringify(credentials)}`,
-            process.env.USER || process.env.USERNAME,
+            createHash('sha256').update(process.env.USER || process.env.USERNAME).digest('hex'),
             true
         );
 
