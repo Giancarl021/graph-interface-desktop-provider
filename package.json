@@ -1,6 +1,6 @@
 {
   "name": "graph-interface-desktop-provider",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Authentication Providers for delegated access on Graph-Interface",
   "main": "index.js",
   "repository": "https://github.com/Giancarl021/graph-interface-auth-providers.git",
