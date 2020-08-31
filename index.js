@@ -64,14 +64,14 @@ module.exports = function (options = filler) {
                     return resolve(data);
                 });
 
-                server.listen(9090);
+                server.listen(options.port);
 
                 const client = new Client({
                     clientId,
                     clientSecret,
                     authorizationUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize`,
                     accessTokenUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-                    redirectUri: 'http://localhost:9090',
+                    redirectUri: 'http://localhost:' + options.port,
                     scopes: ['https://graph.microsoft.com/.default', 'offline_access']
                 });
 
