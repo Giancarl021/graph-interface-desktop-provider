@@ -38,6 +38,8 @@ const graph = await createGraphInterface(credentials, {
 
 ```javascript
 {
-    refreshTokenPath: '.' // The path where the refresh token will be stored
+    refreshTokenPath: '.', // The path where the refresh token will be stored
+    port: 9090, // The port for redirectUri
+    personal: false // The authentication comes from a personal account
 }
 ```

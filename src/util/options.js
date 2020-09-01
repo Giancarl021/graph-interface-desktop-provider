@@ -1,5 +1,6 @@
 const options = {
     refreshTokenPath: '.',
+    personal: false,
     port: 9090
 };
 

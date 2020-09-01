@@ -24,7 +24,7 @@ module.exports = function (options = filler) {
             const { refresh_token } = refreshToken.load();
 
             const getOptions = {
-                url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
+                url: `https://login.microsoftonline.com/${options.personal ? 'consumers' : tenantId}/oauth2/v2.0/token`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -69,8 +69,8 @@ module.exports = function (options = filler) {
                 const client = new Client({
                     clientId,
                     clientSecret,
-                    authorizationUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize`,
-                    accessTokenUri: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
+                    authorizationUri: `https://login.microsoftonline.com/${options.personal ? 'consumers' : tenantId}/oauth2/v2.0/authorize`,
+                    accessTokenUri: `https://login.microsoftonline.com/${options.personal ? 'consumers' : tenantId}/oauth2/v2.0/token`,
                     redirectUri: 'http://localhost:' + options.port,
                     scopes: ['https://graph.microsoft.com/.default', 'offline_access']
                 });
