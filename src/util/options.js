@@ -1,7 +1,8 @@
 const options = {
     refreshTokenPath: '.',
     personal: false,
-    port: 9090
+    port: 9090,
+    cliMode: false
 };
 
 function fillOptions(options, filler) {

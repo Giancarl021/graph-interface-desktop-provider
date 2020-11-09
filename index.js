@@ -75,7 +75,12 @@ module.exports = function (options = filler) {
                     scopes: ['https://graph.microsoft.com/.default', 'offline_access']
                 });
 
-                open(client.code.getUri());
+                const codeUri = client.code.getUri();
+                if (options.cliMode) {
+                    console.log('Open this URL in your browser: ' + codeUri);
+                } else {
+                    open(codeUri);
+                }
             } catch (err) {
                 if(server) server.close();
                 return reject(err);
