@@ -8,7 +8,8 @@ const options = {
 } as Options;
 
 const vaultKeys = {
-    refreshToken: 'RefreshToken'
+    refreshToken: 'RefreshToken',
+    waterMark: 'WaterMark'
 };
 
 const scopes = [ 'https://graph.microsoft.com/.default', 'offline_access' ];

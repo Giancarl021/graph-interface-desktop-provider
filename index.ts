@@ -4,6 +4,7 @@ import { request } from 'undici';
 import Vault from './src/services/vault';
 import Form from './src/services/form';
 import OAuth2 from './src/services/oauth2';
+import Hash from './src/services/hash';
 
 import constants from './src/util/constants';
 
@@ -11,6 +12,7 @@ import { Options, Lib, LooseObject } from './src/interfaces';
 
 export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Lib.AuthenticationProvider {
     const _options = fillObject(options ?? {}, constants.options) as Options;
+    const hash = Hash(_options);
     const vault = Vault(_options.vaultName);
 
     async function authenticationProvider(credentials: Lib.Credentials) : Promise<Lib.AccessTokenResponse> {
@@ -30,7 +32,14 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Li
                 throw new Error('Invalid account type');
         }
 
-        if (await vault.has(constants.vaultKeys.refreshToken)) {
+        const refreshTokenCache = {
+            exists: await vault.has(constants.vaultKeys.refreshToken),
+            isValid: await vault.has(constants.vaultKeys.waterMark) ?
+                (await vault.get<string>(constants.vaultKeys.waterMark)) === hash  :
+                false
+        };
+
+        if (refreshTokenCache.exists && refreshTokenCache.isValid) {
             const refreshToken = await vault.get<string>(constants.vaultKeys.refreshToken);
 
             const response = await request(`https://login.microsoftonline.com/${authority}/oauth2/v2.0/token`, {
@@ -61,6 +70,7 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Li
             
                 if (data.refreshToken) {
                     await vault.set(constants.vaultKeys.refreshToken, data.refreshToken);
+                    await vault.set(constants.vaultKeys.waterMark, hash);
                 }
 
                 return data;
@@ -74,6 +84,7 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Li
         const data = await oAuth2.getToken();
 
         await vault.set(constants.vaultKeys.refreshToken, data.refreshToken);
+        await vault.set(constants.vaultKeys.waterMark, hash);
 
         return data;
     }
