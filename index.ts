@@ -7,7 +7,7 @@ import OAuth2 from './src/services/oauth2';
 
 import constants from './src/util/constants';
 
-import { Options, Lib } from './src/interfaces';
+import { Options, Lib, LooseObject } from './src/interfaces';
 
 export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Lib.AuthenticationProvider {
     const _options = fillObject(options ?? {}, constants.options) as Options;
@@ -49,18 +49,26 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Li
             });
             
             if (response.statusCode === 200) {
-                const data = await response.body.json() as Lib.AccessTokenResponse;
+                const responseData = await response.body.json() as LooseObject;
+
+                const data = {
+                    accessToken: responseData['access_token'],
+                    refreshToken: responseData['refresh_token'],
+                    tokenType: responseData['token_type'],
+                    expiresIn: Number(responseData['expires_in']),
+                    extExpiresIn: Number(responseData['ext_expires_in'])
+                } as Lib.AccessTokenResponse;
             
                 if (data.refreshToken) {
                     await vault.set(constants.vaultKeys.refreshToken, data.refreshToken);
                 }
 
-                return data;   
+                return data;
             }
 
             await vault.remove(constants.vaultKeys.refreshToken);
         }
-        
+
         const oAuth2 = OAuth2(credentials, authority, _options.serverPort, _options.interactionMode);
         
         const data = await oAuth2.getToken();

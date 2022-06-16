@@ -1,12 +1,11 @@
-import { FormData } from 'undici';
 import { LooseObject } from '../interfaces';
 
-export default function (data: LooseObject): FormData {
-    const form = new FormData();
+export default function (data: LooseObject): string {
+    const form: string[] = [];
 
     for (const key in data)
-        form.append(key, data[key]);
+        form.push(`${key}=${encodeURIComponent(data[key])}`);
 
-    return form;
+    return form.join('&');
 }
     

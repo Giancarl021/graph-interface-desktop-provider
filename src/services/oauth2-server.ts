@@ -3,14 +3,18 @@ import { createReadStream } from 'fs';
 import { resolve } from 'path';
 
 import { Lib, OAuth2Server } from '../interfaces';
+import { Token } from 'client-oauth2';
 
 export default (function (client, port) {
     let server : Server | undefined;
     const callbacks: ((data: Lib.AccessTokenResponse) => void)[] = [];
 
-    function start() {
+    async function start() {
         server = createServer(handler);
-        server.listen(port);
+
+        await new Promise(resolve => {
+            server!.listen(port, () => resolve(null));
+        });
     }
 
     async function close() {
@@ -33,30 +37,39 @@ export default (function (client, port) {
 
         const data = await client.code.getToken(url);
 
-        callbacks.forEach(callback => callback({
-            ...data,
-            extExpiresIn: Number(data.expiresIn),
-            expiresIn: Number(data.expiresIn)
-        }));
+        dispatchCallbacks(data);
 
         await file(response, 'index.html', 'text/html');
         await close();
+    }
 
-        async function file(response: ServerResponse, path: string, contentType: string) {
-            const resolvedPath = resolve(__dirname, '..', 'web', ...path.split(/(\\|\/)/g));
-    
-            await new Promise((resolve, reject) => {
-                response.on('close', resolve);
-                response.on('error', reject);
-    
-                response.writeHead(200, {
-                    'Content-Type': contentType
-                });
-    
-                createReadStream(resolvedPath)
-                    .pipe(response, { end: true });             
+    async function file(response: ServerResponse, path: string, contentType: string) {
+        const resolvedPath = resolve(__dirname, '..', 'web', ...path.split(/(\\|\/)/g));
+
+        await new Promise((resolve, reject) => {
+            response.on('finish', resolve);
+            response.on('error', reject);
+
+            response.writeHead(200, {
+                'Content-Type': contentType
             });
-        }
+
+            createReadStream(resolvedPath)
+                .pipe(response, { end: true });             
+        });
+    }
+
+    function dispatchCallbacks(clientResponse: Token) {
+        const { data } = clientResponse;
+        const response = {
+            accessToken: data['access_token'],
+            refreshToken: data['refresh_token'],
+            tokenType: data['token_type'],
+            expiresIn: Number(data['expires_in']),
+            extExpiresIn: Number(data['ext_expires_in'])
+        } as Lib.AccessTokenResponse;
+
+        callbacks.forEach(callback => callback(response));
     }
 
     return {

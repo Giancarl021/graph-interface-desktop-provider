@@ -23,27 +23,26 @@ export default function (credentials: Lib.Credentials, authority: string, server
             const server = Server(client, serverPort);
     
             try {
+                let interactionCallback: () => void;
 
                 const url = client.code.getUri();
-                
-                server.onToken(resolve);
-                
-                server.start();
 
                 switch (interactionMode) {
                     case 'browser':
-                        console.log('Opening default browser...');
-                        open(url)
-                            .then(() => console.log('Browser opened successfully'));
+                        interactionCallback = () => open(url);
                         break;
                     
                     case 'cli':
-                        console.log(`Open this URL in your local browser:\n  ${url}`);
+                        interactionCallback = () => console.log(`Open this URL in your local browser:\n  ${url}`);
                         break;
                     
                     default:
                         throw new Error('Invalid interaction mode');
                 }
+                
+                server.onToken(resolve);
+                
+                server.start().then(interactionCallback);
             } catch (err) {
                 const rej = () => reject(err);
 
