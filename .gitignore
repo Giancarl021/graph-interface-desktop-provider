@@ -1,6 +1,9 @@
-# Local Files
-responses/
-.gphauth/
+# Development files
+
+lib/
+!src/**/lib/
+*.dev.*
+*.test.*
 
 # Logs
 logs

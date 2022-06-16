@@ -1,21 +1,30 @@
 {
   "name": "graph-interface-desktop-provider",
-  "version": "0.1.7",
-  "description": "Authentication Providers for delegated access on Graph-Interface",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Authentication Provider for delegated access on graph-interface on desktop applications",
+  "main": "lib/index.js",
   "repository": "https://github.com/Giancarl021/graph-interface-auth-providers.git",
   "author": "Giancarlo Fontela da Luz <gian.f.luz@hotmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "client-oauth2": "^4.3.2",
-    "open": "^7.1.0",
-    "request": "^2.88.2"
-  },
+  "private": false,
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
-    "test": "node test.spec.js"
+    "build": "tsc",
+    "postbuild": "copyfiles src/web/* lib",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "client-oauth2": "^4.3.3",
+    "fill-object": "^0.1.2",
+    "keytar": "^7.9.0",
+    "open": "^8.4.0",
+    "undici": "^5.5.1"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "@types/node": "^18.0.0",
+    "copyfiles": "^2.4.1"
   },
   "keywords": [
     "Azure AD",
