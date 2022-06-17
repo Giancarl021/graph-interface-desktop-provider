@@ -29,7 +29,7 @@ export default function (credentials: Lib.Credentials, authority: string, server
 
                 switch (interactionMode) {
                     case 'browser':
-                        interactionCallback = () => open(url);
+                        interactionCallback = () => void open(url);
                         break;
                     
                     case 'cli':

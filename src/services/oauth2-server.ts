@@ -41,7 +41,7 @@ export default (function (client: ClientOAuth2, port: number) {
         } else {
             const data = await client.code.getToken(url);
 
-            dispatchCallbacks(data);
+            fireCallbacks(data);
 
             response.statusCode = 301;
             response.setHeader('Location', `http://localhost:${port}/success`);
@@ -67,7 +67,7 @@ export default (function (client: ClientOAuth2, port: number) {
         });
     }
 
-    function dispatchCallbacks(clientResponse: ClientOAuth2Token) {
+    function fireCallbacks(clientResponse: ClientOAuth2Token) {
         const { data } = clientResponse;
         const response = {
             accessToken: data['access_token'],
