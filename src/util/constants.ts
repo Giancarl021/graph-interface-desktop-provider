@@ -2,7 +2,7 @@ import { ProviderOptions } from '../interfaces';
 
 const options = {
     interactionMode: 'browser',
-    applicationType: 'both',
+    accountType: 'both',
     serverPort: 9090,
     vaultName: 'GraphInterface::DesktopProvider::Vault'
 } as ProviderOptions;

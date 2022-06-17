@@ -18,7 +18,7 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<ProviderOption
     async function authenticationProvider(credentials: Lib.Credentials) : Promise<Lib.AccessTokenResponse> {
         let authority: string;
 
-        switch (_options.applicationType) {
+        switch (_options.accountType) {
             case 'both':
                 authority = 'common';
                 break;

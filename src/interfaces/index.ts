@@ -1,6 +1,6 @@
 import * as Lib from './lib';
 import ProviderOptions from './options/provider-options';
-import ApplicationType from './options/application-type';
+import AccountType from './options/account-type';
 import InteractionMode from './options/interaction-mode';
 import OAuth2Server, * as OAuth2ServerService from './services/oauth2-server';
 import LooseObject from './util/loose-object';
@@ -8,7 +8,7 @@ import LooseObject from './util/loose-object';
 export {
     Lib,
     ProviderOptions,
-    ApplicationType,
+    AccountType,
     InteractionMode,
     LooseObject,
     OAuth2Server,

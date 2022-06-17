@@ -1,9 +1,9 @@
-import ApplicationType from './application-type';
+import AccountType from './account-type';
 import InteractionMode from './interaction-mode';
 
 interface ProviderOptions {
     interactionMode: InteractionMode;
-    applicationType: ApplicationType;
+    accountType: AccountType;
     serverPort: number;
     vaultName: string;
 }
