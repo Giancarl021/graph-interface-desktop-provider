@@ -39,7 +39,7 @@ export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Li
                 false
         };
 
-        if (false && refreshTokenCache.exists && refreshTokenCache.isValid) {
+        if (refreshTokenCache.exists && refreshTokenCache.isValid) {
             const refreshToken = await vault.get<string>(constants.vaultKeys.refreshToken);
 
             const response = await request(`https://login.microsoftonline.com/${authority}/oauth2/v2.0/token`, {
