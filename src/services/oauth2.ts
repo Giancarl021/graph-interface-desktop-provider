@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 
 import Server from './oauth2-server';
 
-import { InteractionMode, Lib, OAuth2ServerService } from '../interfaces';
+import { InteractionMode, Lib } from '../interfaces';
 import constants from '../util/constants';
 
 export default function (credentials: Lib.Credentials, authority: string, serverPort: number, interactionMode: InteractionMode) {
