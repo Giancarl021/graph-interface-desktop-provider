@@ -10,38 +10,45 @@
         :root {
             --ts-color: #3178c6;
             --js-color: #f1dd35;
+            --00-color: #000000;
+            --fg-color: #ffffff;
             --bg-color: #00273f;
         }
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-size: 48px;
-            color: #ccc;
-            background-color: var(--bg-color);
-            font-family: 'Consolas', monospace;
+            font-family: 'Consolas', 'Courier New', monospace !important;
         }
 
         body {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            background-color: var(--bg-color);
         }
-        i {
-            display: block;
-            font-size: 25px;
-            margin-top: 20px;
-            text-align: center;
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--js-color);
+            text-shadow: -3px -3px 0 var(--00-color),
+                3px 3px 0 var(--ts-color);
+            margin-bottom: 3rem;
+        }
+
+        p {
+            font-size: 2.5rem;
+            color: var(--fg-color);
         }
     </style>
 </head>
 
 <body>
-    <div>
-        Successful login!
-        <i>You can close this page now.</i>
-    </div>
+    <img src="/icon.png" alt="Graph Interface Desktop Provider Icon">
+    <h1>Successful login!</h1>
+    <p>You can close this page now.</p>
 </body>
 
 </html>
