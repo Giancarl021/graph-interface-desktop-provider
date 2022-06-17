@@ -1,11 +1,11 @@
 import ApplicationType from './application-type';
 import InteractionMode from './interaction-mode';
 
-interface Options {
+interface ProviderOptions {
     interactionMode: InteractionMode;
     applicationType: ApplicationType;
     serverPort: number;
     vaultName: string;
 }
 
-export default Options;
+export default ProviderOptions;

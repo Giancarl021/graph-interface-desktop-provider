@@ -8,10 +8,10 @@ import Hash from './src/services/hash';
 
 import constants from './src/util/constants';
 
-import { Options, Lib, LooseObject } from './src/interfaces';
+import { ProviderOptions, Lib, LooseObject } from './src/interfaces';
 
-export = function GraphInterfaceDesktopProvider(options?: Partial<Options>) : Lib.AuthenticationProvider {
-    const _options = fillObject(options ?? {}, constants.options) as Options;
+export = function GraphInterfaceDesktopProvider(options?: Partial<ProviderOptions>) : Lib.AuthenticationProvider {
+    const _options = fillObject(options ?? {}, constants.options) as ProviderOptions;
     const hash = Hash(_options);
     const vault = Vault(_options.vaultName);
 

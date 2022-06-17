@@ -1,11 +1,11 @@
-import { Options } from '../interfaces';
+import { ProviderOptions } from '../interfaces';
 
 const options = {
     interactionMode: 'browser',
     applicationType: 'both',
     serverPort: 9090,
     vaultName: 'GraphInterface::DesktopProvider::Vault'
-} as Options;
+} as ProviderOptions;
 
 const vaultKeys = {
     refreshToken: 'RefreshToken',
